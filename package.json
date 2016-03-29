@@ -1,6 +1,10 @@
 {
   "name": "electron-require",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brrd/electron-require"
+  },
   "description": "Simplified require in electron applications",
   "main": "index.js",
   "scripts": {
