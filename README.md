@@ -2,25 +2,7 @@
 
 > Simplified require in electron applications
 
-`electron-require` is a super basic, no dependency convenience wrapper around `require` for your electron applications. You can use it to avoid using complex paths (such as `require('../../renderer/module.js')`) in your application.
-
-## Disclaimer
-
-1) This module is still unstable.
- 
-2) Currently, it assumes that your app is organized with the following structure:
-
-```
-.
-├── app
-│   ├── main
-│   │   └── [main process modules]
-│   └── renderer
-│       └── [renderer process modules]
-└── package.json
-```
-
-Support for other architecture will come in future versions.
+`electron-require` is a super basic, no dependency convenience wrapper around `require` for your electron applications. You can use it to avoid using complex require paths in your application.
 
 ## Installation
 
@@ -34,28 +16,80 @@ const rq = require('electron-require');
 
 ## Usage
 
-`rq('module.js')` imports `module.js` from the current process directory (it is actually an alias to `require.main.require('module.js')`).
+### `rq()`
 
-`rq.main('module.js')` (or `rq.browser('module.js')`) imports `app/main/module.js`.
+`rq('./module.js')` imports `module.js` from the current process directory (it is actually an alias to `require.main.require('./module.js')`).
 
-`rq.renderer('module.js')` imports `app/renderer/module.js`.
-
-`rq.root('module.js')` imports `module.js` from the root (i.e. the directory that contains `package.json`).
+### `rq.remote()`
 
 `rq.remote('module')` is the same than `require('electron').remote.require('module')`, except that it resolves into `rq.main('module')` when used in the main process.
 
-You can add your own custom path or override existing ones with `rq.set`:
+### Aliases
+
+You can add your own custom path with `rq.set(key, path)`:
 
 ```javascript
+rq.set('local', 'local');
+// Import [application root]/local/my-local-module.js into myLocalModule
+const myLocalModule = rq.local('./my-local-module.js');
+
 let userData = electron.app.getPath('userData');
 rq.set('plugin', userData + '/plugins');
-const myPlugin = rq.plugin('my-plugin');
+// Import [userdata]/plugins/my-plugin.js into myPlugin
+const myPlugin = rq.plugin('/my-plugin.js'); 
 ```
+
+`rq.set` can also be used with an object:
+
+```javascript
+rq.set({
+	'local': 'local',
+    'plugin': userData + '/plugins'
+});
+```
+
+#### Custom aliases defined in package.json
+
+In most cases you will want to use the same custom aliases for the whole project. You can define custom aliases by adding an `electron-require` to your app package.json file:
+
+```json
+"electron-require": {
+    "first": "path/to/first/alias",
+	"second": "path/to/second/alias"
+}
+```
+
+#### Default aliases
+
+Default aliases are the following: 
+
+```json
+{
+    "root": "",
+    "renderer": "app/renderer",
+    "main": "app/main",
+    "browser": "app/main"
+}
+```
+
+It actually assumes that your app is organized in the following way:
+
+```
+.
+├── app
+│   ├── main
+│   │   └── [main process modules]
+│   └── renderer
+│       └── [renderer process modules]
+└── package.json
+```
+
+But you can of course override theses default values by using `rq.set()` or by adding an `electron-require` entry in your `package.json`.
 
 ## Todo
 
-* [] Add support for various app architectures
-* [] Write tests
+* Write tests
+* Add support template strings for representing common app paths (such as userData, temp...) in order to use in package.json
 
 ## License
 
