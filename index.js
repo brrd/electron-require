@@ -47,4 +47,10 @@ rq.set({
     "browser": "app/main"
 });
 
+// Load custom config from package.json (if exists)
+let pkg = rq.root("package.json");
+if (pkg["electron-require"]) {
+    rq.set(pkg["electron-require"]);
+}
+
 module.exports = rq;
