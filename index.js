@@ -7,7 +7,7 @@ const appRelPath = path.relative(__dirname, app.getAppPath());
 
 let rq = (module) => require.main.require(module);
 
-let remote = (module) => {
+let _remote = (module) => {
     if (process.type === "renderer") {
         return require("electron").remote.require(module);
     } else {
@@ -16,7 +16,7 @@ let remote = (module) => {
     }
 };
 
-let set = (arg1, arg2) => {
+let _set = (arg1, arg2) => {
     if (arg1 == null) throw Error("Undefined key is not allowed in rq.set()");
     // Supports multiple declaration: [{ key, path }, { key, path }]
     if (typeof arg1 === "object") {
@@ -35,8 +35,8 @@ let set = (arg1, arg2) => {
 
 // Immutable properties
 Object.defineProperties(rq, {
-    "remote": { value: remote },
-    "set": { value: set }
+    "remote": { value: _remote },
+    "set": { value: _set }
 });
 
 // Set default config
