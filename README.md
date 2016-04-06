@@ -20,6 +20,10 @@ const rq = require('electron-require');
 
 `rq('./module.js')` imports `module.js` from the current process directory (it is actually an alias to `require.main.require('./module.js')`).
 
+### `rq.electron()`
+
+`rq.electron('module')` is the same than `require('electron')['module']`, except that it resolves into `require('electron').remote['module']` when module is not found, if used in the renderer process.
+
 ### `rq.remote()`
 
 `rq.remote('module')` is the same than `require('electron').remote.require('module')`, except that it resolves into `rq.main('module')` when used in the main process.
@@ -36,7 +40,7 @@ const myLocalModule = rq.local('./my-local-module.js');
 let userData = electron.app.getPath('userData');
 rq.set('plugin', userData + '/plugins');
 // Import [userdata]/plugins/my-plugin.js into myPlugin
-const myPlugin = rq.plugin('/my-plugin.js'); 
+const myPlugin = rq.plugin('/my-plugin.js');
 ```
 
 `rq.set` can also be used with an object:
@@ -61,7 +65,7 @@ In most cases you will want to use the same custom aliases for the whole project
 
 #### Default aliases
 
-Default aliases are the following: 
+Default aliases are the following:
 
 ```json
 {

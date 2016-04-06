@@ -7,6 +7,15 @@ const appRelPath = path.relative(__dirname, app.getAppPath());
 
 let rq = (module) => require.main.require(module);
 
+let _electron = (module) => {
+    if (electron[module]) {
+        return electron[module];
+    } else if (process.type === "renderer" && electron.remote[module]) {
+        return electron.remote[module];
+    }
+    throw new Error(`${module} is not a valid electron module`);
+};
+
 let _remote = (module) => {
     if (process.type === "renderer") {
         return require("electron").remote.require(module);
@@ -35,6 +44,7 @@ let _set = (arg1, arg2) => {
 
 // Immutable properties
 Object.defineProperties(rq, {
+    "electron": { value: _electron },
     "remote": { value: _remote },
     "set": { value: _set }
 });
