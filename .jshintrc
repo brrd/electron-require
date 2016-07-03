@@ -6,5 +6,6 @@
     "eqnull": true,
     "esnext": true,
     "jquery": true,
+    "mocha": true,
     "indent": 4
 }
