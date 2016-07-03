@@ -18,7 +18,7 @@ let _electron = (module) => {
 
 let _remote = (module) => {
     if (process.type === "renderer") {
-        return require("electron").remote.require(module);
+        return electron.remote.require(module);
     } else {
         // fallback on rq if process isnt renderer
         return rq(module);
