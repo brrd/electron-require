@@ -35,10 +35,15 @@ let _set = (arg1, arg2) => {
     } else {
         let key = arg1;
         let dir = arg2;
-        if (!path.isAbsolute(dir)) {
-            dir = path.join(appRelPath, dir);
-        }
-        rq[key] = (module) => require(path.join(dir, module));
+        rq[key] = (module) => {
+            let modulePath;
+            if (!path.isAbsolute(dir)) {
+                modulePath = "./" + path.join(appRelPath, dir, module);
+            } else {
+                modulePath = path.join(dir, module);
+            }
+            return require(modulePath);
+        };
     }
 };
 
