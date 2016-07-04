@@ -1,9 +1,11 @@
 "use strict";
 
+const electron = require("electron");
+const app = electron.app;
 const Mocha = require("mocha");
 
-// TODO: test renderer process
-
-const mocha = new Mocha({});
-mocha.addFile("./tests/tests.js");
-mocha.run();
+app.on("ready", function () {
+    const mocha = new Mocha({});
+    mocha.addFile("./tests/tests.js");
+    mocha.run();
+});

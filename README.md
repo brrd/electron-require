@@ -92,7 +92,6 @@ But you can of course override theses default values by using `rq.set()` or by a
 
 ## Todo
 
-* Write tests
 * Add support template strings for representing common app paths (such as userData, temp...) in order to use in package.json
 
 ## License
