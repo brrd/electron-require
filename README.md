@@ -58,7 +58,7 @@ const myPlugin = rq.plugin('/my-plugin.js');
 You can use template string in the `path` passed to `.set()`:
 
 * `%{app}` resolves to `app.getAppPath()`
-* `%{anyOtherName}` resolves to `app.getPath(anyOtherName)`
+* `%{anyOtherName}` resolves to `app.getPath('anyOtherName')`
 
 So we can write example 2 in a simpler way:
 
