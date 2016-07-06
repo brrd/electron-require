@@ -27,6 +27,7 @@ let _remote = (module) => {
 
 let _set = (arg1, arg2) => {
     if (arg1 == null) throw Error("Undefined key is not allowed in rq.set()");
+    
     // Supports multiple declaration: [{ key, path }, { key, path }]
     if (typeof arg1 === "object") {
         for (let key in arg1) {
@@ -34,7 +35,23 @@ let _set = (arg1, arg2) => {
         }
     } else {
         let key = arg1;
-        let dir = arg2;
+
+        // Replace template strings in path
+        const replaceStr = (str) => {
+            let re = /%{([A-Za-z]*)}/g;
+            let match;
+            const replaceValue = (fullStr, name) => {
+                let replacement = name === "app" ? app.getAppPath() : app.getPath(name);
+                return fullStr.replace(`%{${name}}`, replacement);
+            };
+            while ((match = re.exec(str)) !== null) {
+                str = replaceValue(str, match[1]);
+            }
+            return str;
+        };
+        let dir = replaceStr(arg2);
+
+        // Create the method
         rq[key] = (module) => {
             let modulePath;
             if (!path.isAbsolute(dir)) {

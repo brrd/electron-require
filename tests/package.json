@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "main": "app/main/index.js",
     "electron-require": {
-        "custom1": "custom"
+        "custom1": "custom",
+        "custom2": "%{app}/custom"
     }
 }

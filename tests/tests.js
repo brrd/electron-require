@@ -32,9 +32,14 @@ describe("main process", function () {
         expect(mod).to.equal("custom");
     });
 
-    it("should set and use a custom alias", function () {
-        rq.set("custom2", "./custom/");
+    it("should use an alias defined in package.json with template strings", function () {
         const mod = rq.custom2("./module.js");
+        expect(mod).to.equal("custom");
+    });
+
+    it("should set and use a custom alias", function () {
+        rq.set("custom3", "./custom/");
+        const mod = rq.custom3("./module.js");
         expect(mod).to.equal("custom");
     });
 });
@@ -100,8 +105,14 @@ describe("renderer process", function () {
         });
     });
 
-    it("should set and use a custom alias", function (done) {
+    it("should use an alias defined in package.json with template strings", function (done) {
         pull("custom2", done, (arg) => {
+            expect(arg).to.equal("custom");
+        });
+    });
+
+    it("should set and use a custom alias", function (done) {
+        pull("custom3", done, (arg) => {
             expect(arg).to.equal("custom");
         });
     });

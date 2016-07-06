@@ -10,9 +10,10 @@ let tests = {
     remote: () => rq.remote("./module.js"),
     defaultAlias: () => rq.renderer("./module.js"),
     custom1: () => rq.custom1("./module.js"),
-    custom2: () => {
-        rq.set("custom2", "./custom/");
-        return rq.custom2("./module.js");
+    custom2: () => rq.custom2("./module.js"),
+    custom3: () => {
+        rq.set("custom3", "./custom/");
+        return rq.custom3("./module.js");
     }
 };
 
